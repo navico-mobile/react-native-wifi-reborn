@@ -86,7 +86,14 @@ declare module 'react-native-wifi-reborn' {
 
     export function disconnect(): void;
 
-    export function isRemoveWifiNetwork(SSID: string): Promise<void>;
+    /**
+     * Remove the network with SSID from configirued networks. 
+     * When their is a wrong authed network in configured network, the connectToProtectedSSID will fail.
+     * So please use this function to delete it first. 
+     * @param SSID 
+     * @returns true: the network has been deleted. false: the network is created by others, you can not delete it.
+     */
+    export function isRemoveWifiNetwork(SSID: string): Promise<boolean>;
 
     export enum FORCE_WIFI_USAGE_ERRORS {
         couldNotGetConnectivityManager = 'couldNotGetConnectivityManager',
@@ -104,5 +111,13 @@ declare module 'react-native-wifi-reborn' {
      * @param useWifi boolean to force wifi off or on
      */
     export function forceWifiUsage(useWifi: boolean): Promise<void>;
+
+    /**
+     * This method will check if the Location service is on
+     *
+     * @returns true: location service is on
+     *          false: location service is off
+     */
+    export function isLocationServiceOn():Promise<boolean>;
     //#endregion
 }
