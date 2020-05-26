@@ -111,5 +111,13 @@ declare module 'react-native-wifi-reborn' {
      * @param useWifi boolean to force wifi off or on
      */
     export function forceWifiUsage(useWifi: boolean): Promise<void>;
+
+    /**
+     * This method will check if the Location service is on
+     *
+     * @returns true: location service is on
+     *          false: location service is off
+     */
+    export function isLocationServiceOn():Promise<boolean>;
     //#endregion
 }

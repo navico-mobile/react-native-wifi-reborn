@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
 import android.net.Network;
@@ -431,7 +432,30 @@ public class RNWifiModule extends ReactContextBaseJavaModule {
         promise.resolve(true);
     }
 
+    /**
+     * This method will check if the Location service is on
+     *
+     * @param promise true means the location service is on
+     *                false means the location service is off
+     */
+    @ReactMethod
+    public void isLocationServiceOn(final Promise promise) {
+      LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+      boolean gps_enabled = false;
+      boolean network_enabled = false;
+      if(lm==null){
+        promise.reject("isLocationServiceOnFailed","can not get location manager");
+        return;
+      }
+      try {
+        gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+      } catch (SecurityException e) {
+        promise.reject(e);
+      }
 
+      promise.resolve(gps_enabled || network_enabled);
+    }
     /**
      * This method is similar to `loadWifiList` but it forcefully starts the wifi scanning on android and in the callback fetches the list
      *
